@@ -30,12 +30,14 @@ class WeatherController extends Controller
             $response = Http::get($apiEndpoint, $params);
             $weatherData = $response->json();
 
-            $city = $weatherData['location']['name'];
+            $city = $weatherData['location']['region'];
             $temperature = $weatherData['current']['temp_c'];
             $condition = $weatherData['current']['condition']['text'];
             
+            $cityKanji = config("cities.{$city}", $city);
+
             return view('home', [
-                'city' => $city,
+                'city' => $cityKanji,
                 'temperature' => $temperature,
                 'condition' => $condition,
             ]);
